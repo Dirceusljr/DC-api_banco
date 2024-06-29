@@ -1,4 +1,5 @@
 import db from '../config/dbConnect.js';
+import { enviarEmail } from '../config/mail.js';
 import atualizarSaldo from '../utils/atualizarSaldo.js';
 import obterSaldo from '../utils/obterSaldo.js';
 import taxa from '../utils/obterTaxa.js';
@@ -70,6 +71,8 @@ class transacaoController {
                         }
                     })
                 })
+                const saldoAtualizado = saldoAtual - valorTaxado;
+                enviarEmail(forma_pagamento, conta_id, valor, saldoAtualizado);
             } else {
                 return res.status(404).json({
                     message: 'Saldo insuficiente',
